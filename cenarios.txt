@@ -1,0 +1,43 @@
+Abaixo estao os cenários de teste escritos na ligaguem gherkin e na sequencia as sugestões de melhorias.
+
+Cenários de Teste
+
+  Cenário: Leitura de arquivo com formato válido
+    Dado que recebo um arquivo com formato esperado
+    Quando tento ler o arquivo
+    Então o arquivo é processado sem erros
+
+  Cenário: Leitura de arquivo com formato inválido
+    Dado que recebo um arquivo com formato não esperado
+    Quando tento ler o arquivo
+    Então uma mensagem de erro sobre o formato inválido é mostrada
+
+  Cenário: Consulta com títulos e edições existentes na base
+    Dado que um título com sua edição existe na base de dados
+    Quando faço uma consulta com esse título e edição
+    Então as informações adicionais são retornadas com sucesso
+
+  Cenário: Consulta com títulos e edições não existentes na base
+    Dado que um título com sua edição não existe na base de dados
+    Quando faço uma consulta com esse título e edição
+    Então uma notificação de dados não encontrados é apresentada
+
+  Cenário: Enriquecimento completo de dados
+    Dado que informações detalhadas estão disponíveis para um livro
+    Quando enriqueço os dados desse livro
+    Então todos os campos adicionais são preenchidos corretamente
+
+  Cenário: Enriquecimento de dados com informações faltantes
+    Dado que algumas informações detalhadas não estão disponíveis para um livro
+    Quando enriqueço os dados desse livro
+    Então os campos disponíveis são preenchidos e os campos faltantes são claramente indicados
+
+  Cenário: Geração bem-sucedida do arquivo enriquecido
+    Dado que completei o enriquecimento de dados
+    Quando gero o arquivo de dados enriquecidos
+    Então o arquivo é criado no formato esperado e sem erros
+
+  Cenário: Falha na geração do arquivo enriquecido
+    Dado que ocorreu um erro durante o enriquecimento de dados
+    Quando tento gerar o arquivo de dados enriquecidos
+    Então uma mensagem de erro é exibida e a geração do arquivo falha
