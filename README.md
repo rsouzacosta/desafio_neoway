@@ -24,3 +24,7 @@ Para baixar o Postman, basta acessar https://www.postman.com/downloads/
         - Para verificar a quantidade debitada do estoque do produto, pegue os _id dos produtos e informe na aba Params na linha idProduto na coluna Value do request Verificar quantidade debitada.
 
 ##  Desafio: Testes de Performance
+Nessa parte do desafio foi usado o JMeter para aplicar o teste de perfomance, entao sera necessario instalar o JMeter para rodar os teste.
+
+Para instalar o JMeter acesse https://jmeter.apache.org/download_jmeter.cgi
+
