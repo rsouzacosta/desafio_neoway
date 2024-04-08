@@ -1,0 +1,465 @@
+{
+	"info": {
+		"_postman_id": "b7adf9e7-ea12-4861-b3f2-5a121e50d4a5",
+		"name": "ServeRest Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11184449"
+	},
+	"item": [
+		{
+			"name": "Cenario 1",
+			"item": [
+				{
+					"name": "Cadastro de usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status da resposta é 201\", function () {\r",
+									"    //Verifica se o status da resposta e 201 Created\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Valida o corpo da resposta\", function () {\r",
+									"    //Pega as informacoes da resposta e armazena na variavel\r",
+									"    let jsonData = pm.response.json();\r",
+									"\r",
+									"    //Verificar a mensagem de sucesso na resposta da chamada\r",
+									"    pm.expect(jsonData).to.have.property('message', 'Cadastro realizado com sucesso');\r",
+									"    //Verifica se o campo _id nao esta vazio\r",
+									"    pm.expect(jsonData._id).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tempo de resposta menos de 1000ms\", function () {\r",
+									"    //Verifica o tempo de resposta e menor de 1000ms que e 1 segundo\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Rafael\",\r\n  \"email\": \"rafael@uorak.com\",\r\n  \"password\": \"senha1234\",\r\n  \"administrador\": \"true\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Valida o corpo da resposta\", function () {\r",
+									"    //Pega as informacoes da resposta e armazena na variavel\r",
+									"    let jsonData = pm.response.json();\r",
+									"\r",
+									"    //Verificar a mensagem de registro alterado e se nao esta vazia\r",
+									"    pm.expect(jsonData.message).to.equal(\"Registro alterado com sucesso\").to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"//Verificar se o nome foi atualizado para \"Joao\"\r",
+									"pm.sendRequest({\r",
+									"    url: pm.environment.get(\"baseUrl\") + \"/usuarios/\" + \"7XPfFKcKmSRHrGj9\",\r",
+									"    method: 'GET'\r",
+									"}, function (err, response) {\r",
+									"    //console.log(response.json()); \r",
+									"    pm.test(\"Verifica se o usuário foi atualizado corretamente\", function () {\r",
+									"        var userData = response.json();\r",
+									"        pm.expect(userData.nome).to.eql(\"Joao\");\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Joao22\",\r\n  \"email\": \"joao1233@detal.com.br\",\r\n  \"password\": \"senha123\",\r\n  \"administrador\": \"true\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "7XPfFKcKmSRHrGj9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status da resposta é 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Mensagem confirma deleção\", function () {\r",
+									"    let responseData = pm.response.json();\r",
+									"    pm.expect(responseData.message).to.equal(\"Registro excluído com sucesso\");\r",
+									"});\r",
+									"\r",
+									"//Assumindo que a deleção foi bem-sucedida e você quer verificar se o usuário realmente foi removido\r",
+									"pm.sendRequest({\r",
+									"    url: pm.environment.get(\"baseUrl\") + \"/usuarios/\" + \"AKtT7FFf7Bvyz6a4\",\r",
+									"    method: 'GET'\r",
+									"}, function (err, response) {\r",
+									"    console.log(response);\r",
+									"    pm.test(\"Usuário não existe mais após deleção\", function () {\r",
+									"        pm.expect(response.code).to.eql(400);\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/usuarios/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "AKtT7FFf7Bvyz6a4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pesquisar por nome",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status da resposta é 200\", function () {\r",
+									"    //Verifica se o status da resposta e 200 Created\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Propriedade 'quantidade' existe e é um número\", function () {\r",
+									"    //Pega as informacoes da resposta e armazena na variavel\r",
+									"    let responseData = pm.response.json();\r",
+									"    //Verificar se o corpo possui a propriedade quantidade e se o valor nela e um numero\r",
+									"    pm.expect(responseData).to.have.property('quantidade').that.is.a('number');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Todos os usuários têm a estrutura esperada\", function () {\r",
+									"    //Pega as informacoes da resposta e armazena na variavel\r",
+									"    let responseData = pm.response.json();\r",
+									"    //Verifica se a propriedade usuarios e um array e se nao esta vazia\r",
+									"    pm.expect(responseData.usuarios).to.be.an('array').that.is.not.empty;\r",
+									"    \r",
+									"    //Dentro do array usuario ele pega todas as propriedades\r",
+									"    //Verifica se as propriedades nome,email,password e _id sao do tipo string e nao estao vazias\r",
+									"    responseData.usuarios.forEach((usuario) => {\r",
+									"        pm.expect(usuario).to.have.all.keys('nome', 'email', 'password', 'administrador', '_id');\r",
+									"        pm.expect(usuario.nome).to.be.a('string').that.is.not.empty;\r",
+									"        pm.expect(usuario.email).to.be.a('string').that.is.not.empty;\r",
+									"        pm.expect(usuario.password).to.be.a('string').that.is.not.empty;\r",
+									"        pm.expect(usuario.administrador).to.satisfy(function(adminValue) {\r",
+									"            return adminValue === 'true' || adminValue === 'false';\r",
+									"        });\r",
+									"        pm.expect(usuario._id).to.be.a('string').that.is.not.empty;\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios?nome=Rafael",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							],
+							"query": [
+								{
+									"key": "nome",
+									"value": "Rafael"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cenario 2",
+			"item": [
+				{
+					"name": "Cadastrar usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status da resposta é 201\", function () {\r",
+									"    //Verifica se o status da resposta e 201 Created\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Valida o corpo da resposta\", function () {\r",
+									"    //Pega as informacoes da resposta e armazena na variavel\r",
+									"    let jsonData = pm.response.json();\r",
+									"\r",
+									"    //Verificar a mensagem de sucesso na resposta da chamada\r",
+									"    pm.expect(jsonData).to.have.property('message', 'Cadastro realizado com sucesso');\r",
+									"    //Verifica se o campo _id nao esta vazio\r",
+									"    pm.expect(jsonData._id).to.not.be.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Tempo de resposta menos de 1000ms\", function () {\r",
+									"    //Verifica o tempo de resposta e menor de 1000ms que e 1 segundo\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"RafaelP\",\r\n  \"email\": \"rafaelp@uorak.com\",\r\n  \"password\": \"senha1234\",\r\n  \"administrador\": \"true\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/usuarios",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"usuarios"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"rafaelp@uorak.com\",\r\n  \"password\": \"senha1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar produto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{loginToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"P2\",\r\n  \"preco\": 100,\r\n  \"descricao\": \"Produto 2\",\r\n  \"quantidade\": 100\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/produtos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produtos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar produto ao carrinho",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{loginToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"produtos\": [\r\n    {\r\n      \"idProduto\": \"VSOwIRQA8qpXsvnx\",\r\n      \"quantidade\": 1\r\n    },\r\n    {\r\n      \"idProduto\": \"7dlS6qlrTeRCSDru\",\r\n      \"quantidade\": 1\r\n    }\r\n  ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/carrinhos",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carrinhos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Finalizar compra",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "{{loginToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/carrinhos/concluir-compra",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"carrinhos",
+								"concluir-compra"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verificar quantidade debitada",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/produtos/:idProduto",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"produtos",
+								":idProduto"
+							],
+							"variable": [
+								{
+									"key": "idProduto",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
