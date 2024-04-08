@@ -28,3 +28,7 @@ Nessa parte do desafio foi usado o JMeter para aplicar o teste de perfomance, en
 
 Para instalar o JMeter acesse https://jmeter.apache.org/download_jmeter.cgi
 
+Tendo o JMeter instalado, e possivel importar o arquivo testes_cinco_usuarios
+Mas tambem e possivel abrir o arquivo index.html no navegador que ira apresentar o report (relatorio)
+
+No arquivo minha_analise.txt esta analise feita sobre o relatorio gerado.

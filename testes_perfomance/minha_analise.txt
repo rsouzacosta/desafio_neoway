@@ -1,0 +1,20 @@
+
+Levando em consideracao alguns aspectos-chave do desempenho baseados nos dados disponíveis:
+
+Tempo Médio de Resposta: 220 ms. Isso indica que, em média, as requisições levaram 220 milissegundos para serem completadas. 
+Um tempo de resposta mais baixo é geralmente desejável, indicando que a aplicação responde rapidamente às requisições dos usuários.
+
+Taxa de Sucesso: 100%. Todas as requisições feitas durante o teste foram bem-sucedidas, 
+o que é um excelente indicador da estabilidade e confiabilidade da API sob o volume de carga testado.
+
+Vazão: Aproximadamente 22,68 requisições por segundo. Este valor mostra quantas requisições a aplicação consegue processar por segundo sob a carga de teste especificada. 
+Uma vazão maior indica uma capacidade maior da aplicação em lidar com cargas de trabalho.
+
+Latência Média: 171.4 ms. A latência média mostra o tempo médio necessário para o servidor começar a responder às requisições. 
+Este valor é um pouco menor que o tempo médio de resposta, pois não inclui o tempo para a transferência completa da resposta.
+
+Estes resultados sugerem que a API está performando bem sob a carga de teste especificada de 5 usuários simultâneos, respondendo rapidamente e sem erros. 
+No entanto, seria importante ter definido nos requisitos o desempenho esperado pelo cliente ou AN, para poder compará-los com esses resultados. 
+Caso seja esperado uma carga de usuários significativamente maior em produção, seria recomendando, 
+ajustar a carga de teste ou investigar maneiras de otimizar a performance da API (por exemplo, melhorando a infraestrutura de servidor, 
+otimizando o código da aplicação, etc.).
